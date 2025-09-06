@@ -458,18 +458,27 @@ button:disabled {
     min-width: 40px;
 }
 
+.camera-feed-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #000;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+}
+
 .camera-video {
     width: 100%;
-    max-width: 100%;
-    height: auto;
-    max-height: 400px;
+    height: 100%;
+    object-fit: cover;
     border-radius: 8px;
     background: #000;
     display: none;
     cursor: grab;
     touch-action: none;
     user-select: none;
-    object-fit: contain;
 }
 
 .camera-video.active {
@@ -604,9 +613,5 @@ button:disabled {
     
     .text-capture-controls {
         justify-content: center;
-    }
-    
-    .camera-video {
-        max-height: 300px;
     }
 }
