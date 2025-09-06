@@ -1,5 +1,3 @@
-
-```javascript
 export class CameraManager {
     constructor() {
         this.stream = null;
@@ -146,7 +144,7 @@ export class CameraManager {
         this.updateDetectedTextDisplay();
     }
 
-    copyToInput() {
+    async copyToInput() {
         const textInput = document.getElementById('textInput');
         textInput.value = this.detectedText;
         
