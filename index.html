@@ -1,0 +1,131 @@
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElevenLabs Voice Tester</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <main class="main-grid">
+            <section class="voice-panel">
+                <div class="preset-section">
+                    <div class="preset-buttons">
+                        <button class="preset-btn" data-voice="pNInz6obpgDQGcFmaJgB">Adam</button>
+                        <button class="preset-btn" data-voice="Xb7hH8MSUJpSbSDYk0k2">Alice</button>
+                        <button class="preset-btn" data-voice="ErXwobaYiN019PkySvjV">Antoni</button>
+                        <button class="preset-btn" data-voice="VR6AewLTigWG4xSOukaG">Arnold</button>
+                        <button class="preset-btn" data-voice="nPczCjzI2devNBz1zQrb">Brian</button>
+                        <button class="preset-btn" data-voice="N2lVS1w4EtoT3dr4eOWO">Callum</button>
+                        <button class="preset-btn" data-voice="IKne3meq5aSn9XLyUdCD">Charlie</button>
+                        <button class="preset-btn" data-voice="XB0fDUnXU5powFXDhCwa">Charlotte</button>
+                        <button class="preset-btn" data-voice="iP95p4xoKVk53GoZ742B">Chris</button>
+                        <button class="preset-btn" data-voice="2EiwWnXFnvU5JabPnv8n">Clyde</button>
+                        <button class="preset-btn" data-voice="onwK4e9ZLuTAKqWW03F9">Daniel</button>
+                        <button class="preset-btn" data-voice="CYw3kZ02Hs0563khs1Fj">Dave</button>
+                        <button class="preset-btn" data-voice="AZnzlk1XvdvUeBnXmlld">Domi</button>
+                        <button class="preset-btn" data-voice="ThT5KcBeYPX3keUQqHPh">Dorothy</button>
+                        <button class="preset-btn" data-voice="29vD33N1CtxCmqQRPOHJ">Drew</button>
+                        <button class="preset-btn" data-voice="g5CIjZEefAph4nQFvHAz">Ethan</button>
+                        <button class="preset-btn" data-voice="D38z5RcWu1voky8WS1ja">Fin</button>
+                        <button class="preset-btn" data-voice="jsCqWAovK2LkecY7zXl4">Freya</button>
+                        <button class="preset-btn" data-voice="JBFqnCBsd6RMkjVDRZzb">George</button>
+                        <button class="preset-btn" data-voice="zcAOhNBS3c14rBihAFp1">Giovanni</button>
+                        <button class="preset-btn" data-voice="jBpfuIE2acCO8z3wKNLl">Gigi</button>
+                        <button class="preset-btn" data-voice="z9fAnlkpzviPz146aGWa">Glinda</button>
+                        <button class="preset-btn" data-voice="oWAxZDx7w5VEj9dCyTzz">Grace</button>
+                        <button class="preset-btn" data-voice="SOYHLrjzK2X1ezoPC6cr">Harry</button>
+                        <button class="preset-btn" data-voice="ZQe5CZNOzWyzPSCn5a3c">James</button>
+                        <button class="preset-btn" data-voice="bVMeCyTHy58xNoL34h3p">Jeremy</button>
+                        <button class="preset-btn" data-voice="t0jbNlBVZ17f02VDIeMI">Jessie</button>
+                        <button class="preset-btn" data-voice="Zlb1dXrM653N07WRdFW3">Joseph</button>
+                        <button class="preset-btn" data-voice="TxGEqnHWrfWFTfGW9XjX">Josh</button>
+                        <button class="preset-btn" data-voice="TX3LPaxmHKxFdv7VOQHJ">Liam</button>
+                        <button class="preset-btn" data-voice="pFZP5JQG7iQjIQuC4Bku">Lily</button>
+                        <button class="preset-btn" data-voice="XrExE9yKIg1WjnnlVkGX">Matilda</button>
+                        <button class="preset-btn" data-voice="flq6f7yk4E4fJM5XTYuZ">Michael</button>
+                        <button class="preset-btn" data-voice="zrHiDhphv9ZnVXBqCLjz">Mimi</button>
+                        <button class="preset-btn" data-voice="piTKgcLEGmPE4e6mEKli">Nicole</button>
+                        <button class="preset-btn" data-voice="ODq5zmih8GrVes37Dizd">Patrick</button>
+                        <button class="preset-btn" data-voice="5Q0t7uMcjvnagumLfvZi">Paul</button>
+                        <button class="preset-btn" data-voice="21m00Tcm4TlvDq8ikWAM">Rachel</button>
+                        <button class="preset-btn" data-voice="yoZ06aMxZJJ28mfd3POQ">Sam</button>
+                        <button class="preset-btn" data-voice="EXAVITQu4vr4xnSDxMaL">Sarah</button>
+                        <button class="preset-btn" data-voice="pMsXgVXv3BLzUgSXRplE">Serena</button>
+                        <button class="preset-btn" data-voice="GBv7mTt0atIp3Br8iCZE">Thomas</button>
+                        <button class="preset-btn" data-voice="knrPHWnBmmDHMoiMeP3l">Santa Claus</button>
+                    </div>
+                </div>
+
+                <div class="custom-voice">
+                    <div class="input-group">
+                        <input type="text" id="voiceIdInput" placeholder="Enter Voice ID..."/>
+                        <button id="addVoiceBtn">Add</button>
+                    </div>
+                    <div class="voice-list" id="voiceList"></div>
+                </div>
+            </section>
+
+            <section class="camera-section">
+                <h2>Camera Text Capture</h2>
+                
+                <div class="camera-controls">
+                    <button id="startCameraBtn">Start Camera</button>
+                    <button id="captureTextBtn" disabled>Capture Text</button>
+                    <button id="switchCameraBtn" disabled>Switch Camera</button>
+                    <button id="stopCameraBtn" disabled>Stop Camera</button>
+                </div>
+                
+                <div style="position: relative;">
+                    <video id="cameraVideo" class="camera-video" autoplay playsinline></video>
+                    <div id="captureOverlay" class="capture-text-overlay"></div>
+                </div>
+                
+                <div class="tts-mode-toggle">
+                    <label>
+                        <input type="checkbox" id="useBrowserTTS">
+                        Use Browser TTS
+                    </label>
+                </div>
+                
+                <div id="detectedText" class="detected-text-display"></div>
+                
+                <div class="text-capture-controls">
+                    <button id="speakDetectedBtn" disabled>Speak Detected Text</button>
+                    <button id="copyDetectedBtn" disabled>Copy to Input</button>
+                    <button id="clearDetectedBtn" disabled>Clear</button>
+                </div>
+            </section>
+
+            <section class="history-panel">
+                <button class="download-all-btn" onclick="downloadAllHistory()">
+                    Download All
+                </button>
+                <div class="history-list" id="historyList">
+                    <!-- History items will be added here -->
+                </div>
+            </section>
+        </main>
+
+        <footer class="tts-footer">
+            <div class="audio-container">
+                <audio id="audioPlayer" controls></audio>
+            </div>
+            <div class="tts-input-container">
+                <input type="text" id="textInput" placeholder="Enter text to speak..."/>
+                <div class="tts-controls">
+                    <button id="speakBtn" disabled>Speak</button>
+                    <button id="stopBtn" disabled>Stop</button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+    <script type="module" src="app.js"></script>
+</body>
+</html>
