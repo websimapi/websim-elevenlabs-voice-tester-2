@@ -40,6 +40,10 @@ const speakDetectedBtn = document.getElementById('speakDetectedBtn');
 const copyDetectedBtn = document.getElementById('copyDetectedBtn');
 const clearDetectedBtn = document.getElementById('clearDetectedBtn');
 const useBrowserTTSCheckbox = document.getElementById('useBrowserTTS');
+const zoomOutBtn = document.getElementById('zoomOutBtn');
+const zoomInBtn = document.getElementById('zoomInBtn');
+const resetZoomBtn = document.getElementById('resetZoomBtn');
+const zoomLevelSpan = document.getElementById('zoomLevel');
 
 // Initialize UI on load
 document.addEventListener('DOMContentLoaded', () => {
@@ -155,6 +159,125 @@ switchCameraBtn.addEventListener('click', () => {
 stopCameraBtn.addEventListener('click', () => {
     cameraManager.stopCamera();
 });
+
+// Zoom controls
+zoomInBtn.addEventListener('click', () => {
+    cameraManager.zoomIn();
+    updateZoomDisplay();
+});
+
+zoomOutBtn.addEventListener('click', () => {
+    cameraManager.zoomOut();
+    updateZoomDisplay();
+});
+
+resetZoomBtn.addEventListener('click', () => {
+    cameraManager.setZoom(1);
+    cameraManager.videoOffset = { x: 0, y: 0 };
+    cameraManager.updateVideoTransform();
+    updateZoomDisplay();
+});
+
+function updateZoomDisplay() {
+    if (zoomLevelSpan) {
+        zoomLevelSpan.textContent = `${Math.round(cameraManager.zoomLevel * 100)}%`;
+    }
+}
+
+// Touch and mouse events for camera
+const cameraVideo = document.getElementById('cameraVideo');
+let lastTouchDistance = null;
+
+cameraVideo.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2) {
+        e.preventDefault();
+        const touch1 = e.touches[0];
+        const touch2 = e.touches[1];
+        lastTouchDistance = Math.hypot(
+            touch2.clientX - touch1.clientX,
+            touch2.clientY - touch1.clientY
+        );
+        cameraManager.handlePinchStart(lastTouchDistance);
+    } else if (e.touches.length === 1) {
+        const touch = e.touches[0];
+        cameraManager.handleDragStart(touch.clientX, touch.clientY);
+    }
+});
+
+cameraVideo.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2) {
+        e.preventDefault();
+        const touch1 = e.touches[0];
+        const touch2 = e.touches[1];
+        const distance = Math.hypot(
+            touch2.clientX - touch1.clientX,
+            touch2.clientY - touch1.clientY
+        );
+        cameraManager.handlePinchMove(distance);
+    } else if (e.touches.length === 1) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        cameraManager.handleDragMove(touch.clientX, touch.clientY);
+    }
+});
+
+cameraVideo.addEventListener('touchend', (e) => {
+    if (e.touches.length === 0) {
+        cameraManager.handlePinchEnd();
+        cameraManager.handleDragEnd();
+        lastTouchDistance = null;
+    }
+});
+
+// Mouse drag support
+let isMouseDragging = false;
+let lastMousePos = { x: 0, y: 0 };
+
+cameraVideo.addEventListener('mousedown', (e) => {
+    isMouseDragging = true;
+    lastMousePos = { x: e.clientX, y: e.clientY };
+    cameraManager.handleDragStart(e.clientX, e.clientY);
+});
+
+cameraVideo.addEventListener('mousemove', (e) => {
+    if (isMouseDragging) {
+        cameraManager.handleDragMove(e.clientX, e.clientY);
+    }
+});
+
+cameraVideo.addEventListener('mouseup', () => {
+    isMouseDragging = false;
+    cameraManager.handleDragEnd();
+});
+
+cameraVideo.addEventListener('mouseleave', () => {
+    isMouseDragging = false;
+    cameraManager.handleDragEnd();
+});
+
+// Update camera button states
+function updateCameraButtonStates() {
+    const cameraActive = cameraManager.stream !== null;
+    zoomOutBtn.disabled = !cameraActive;
+    zoomInBtn.disabled = !cameraActive;
+    resetZoomBtn.disabled = !cameraActive;
+}
+
+// Update camera button states when camera starts/stops
+const originalStartCamera = cameraManager.startCamera;
+cameraManager.startCamera = async function() {
+    const result = await originalStartCamera.call(this);
+    if (result) {
+        updateCameraButtonStates();
+    }
+    return result;
+};
+
+const originalStopCamera = cameraManager.stopCamera;
+cameraManager.stopCamera = function() {
+    originalStopCamera.call(this);
+    updateCameraButtonStates();
+};
 
 speakDetectedBtn.addEventListener('click', () => {
     const useBrowserTTS = useBrowserTTSCheckbox?.checked;

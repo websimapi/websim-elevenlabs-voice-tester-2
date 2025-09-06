@@ -6,6 +6,14 @@ export class CameraManager {
         this.ctx = this.canvas.getContext('2d');
         this.currentFacingMode = 'environment'; // Start with back camera on mobile
         this.detectedText = '';
+        this.zoomLevel = 1;
+        this.minZoom = 0.5;
+        this.maxZoom = 5;
+        this.zoomStep = 0.2;
+        this.isDragging = false;
+        this.lastPinchDistance = null;
+        this.dragStart = { x: 0, y: 0 };
+        this.videoOffset = { x: 0, y: 0 };
     }
 
     async startCamera() {
@@ -48,6 +56,9 @@ export class CameraManager {
         
         this.video.classList.remove('active');
         this.video.srcObject = null;
+        this.zoomLevel = 1;
+        this.videoOffset = { x: 0, y: 0 };
+        this.updateVideoTransform();
         
         // Reset buttons
         document.getElementById('startCameraBtn').disabled = false;
@@ -61,6 +72,66 @@ export class CameraManager {
         this.startCamera();
     }
 
+    zoomIn() {
+        const newZoom = Math.min(this.maxZoom, this.zoomLevel + this.zoomStep);
+        this.setZoom(newZoom);
+    }
+
+    zoomOut() {
+        const newZoom = Math.max(this.minZoom, this.zoomLevel - this.zoomStep);
+        this.setZoom(newZoom);
+    }
+
+    setZoom(level) {
+        this.zoomLevel = level;
+        this.updateVideoTransform();
+    }
+
+    updateVideoTransform() {
+        const transform = `scale(${this.zoomLevel}) translate(${this.videoOffset.x}px, ${this.videoOffset.y}px)`;
+        this.video.style.transform = transform;
+        this.video.style.transformOrigin = 'center center';
+    }
+
+    handlePinchStart(distance) {
+        this.lastPinchDistance = distance;
+    }
+
+    handlePinchMove(distance) {
+        if (this.lastPinchDistance === null) return;
+        
+        const scale = distance / this.lastPinchDistance;
+        const newZoom = Math.max(this.minZoom, Math.min(this.maxZoom, this.zoomLevel * scale));
+        this.setZoom(newZoom);
+        this.lastPinchDistance = distance;
+    }
+
+    handlePinchEnd() {
+        this.lastPinchDistance = null;
+    }
+
+    handleDragStart(x, y) {
+        this.isDragging = true;
+        this.dragStart = { x, y };
+    }
+
+    handleDragMove(x, y) {
+        if (!this.isDragging) return;
+        
+        const deltaX = (x - this.dragStart.x) / this.zoomLevel;
+        const deltaY = (y - this.dragStart.y) / this.zoomLevel;
+        
+        this.videoOffset.x += deltaX;
+        this.videoOffset.y += deltaY;
+        this.dragStart = { x, y };
+        
+        this.updateVideoTransform();
+    }
+
+    handleDragEnd() {
+        this.isDragging = false;
+    }
+
     async captureText() {
         if (!this.video.videoWidth) return;
 
@@ -68,8 +139,12 @@ export class CameraManager {
         this.canvas.width = this.video.videoWidth;
         this.canvas.height = this.video.videoHeight;
 
-        // Draw current video frame to canvas
+        // Draw current video frame to canvas with zoom and offset applied
+        this.ctx.save();
+        this.ctx.scale(this.zoomLevel, this.zoomLevel);
+        this.ctx.translate(this.videoOffset.x, this.videoOffset.y);
         this.ctx.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.restore();
 
         // Convert to blob
         const blob = await new Promise(resolve => {
