@@ -461,12 +461,15 @@ button:disabled {
 .camera-video {
     width: 100%;
     max-width: 100%;
+    height: auto;
+    max-height: 400px;
     border-radius: 8px;
     background: #000;
     display: none;
     cursor: grab;
     touch-action: none;
     user-select: none;
+    object-fit: contain;
 }
 
 .camera-video.active {
@@ -601,5 +604,9 @@ button:disabled {
     
     .text-capture-controls {
         justify-content: center;
+    }
+    
+    .camera-video {
+        max-height: 300px;
     }
 }
